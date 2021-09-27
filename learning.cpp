@@ -29,6 +29,8 @@ learn::machine_learn(int hidden_layer, int hidden, int epoch, long double a, int
     shuffle();
     loss_val = 1e10;
 
+    all_result_data = all_answer_data;
+
     long double decay = 0.1;
     
     for(int i = 0; i < epoch; ++i)
@@ -40,9 +42,11 @@ learn::machine_learn(int hidden_layer, int hidden, int epoch, long double a, int
 
             forward();
             back_propagation();
+            
+            all_result_data[j] = result;
         }
         ++t;
-        cout << i << " " << loss_val << endl;
+        cout << i << " loss: " << loss_val << " accuracy: " << accuracy() << "%" << endl;
         if(i % 5 == 0)
             alpha *= decay;
     }
@@ -547,4 +551,19 @@ long double
 learn::d_cross_entropy_error(long double x, long double y)
 {
     return -(y/x) + (1-y)/(1-x);
+}
+
+long double
+learn::accuracy()
+{
+    long double sum = 0;
+    for(int i = 0; i < all_answer_data.size(); ++i)
+    {
+        for(int j = 0; j < all_answer_data[i].size(); ++j)
+        {
+            if(int(all_result_data[i][j]) == all_answer_data[i][j])
+                ++sum;
+        }
+    }
+    return sum / (long double) all_answer_data.size() * 100;
 }

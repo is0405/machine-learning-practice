@@ -25,6 +25,7 @@ class learn
 
     std::vector<std::vector<long double>> all_input_data;//入力層の値を保存する
     std::vector<std::vector<long double>> all_answer_data;
+    std::vector<std::vector<long double>> all_result_data;
 
     //Adamパラメータ
     std::vector<std::vector<std::vector<long double>>> m;
@@ -66,6 +67,7 @@ class learn
     void init_weight();
     void differential();
     void optimizer();
+    long double accuracy();
     
  public:
     void machine_learn(int hidden_layer, int hidden, int epoch, long double a, int batch_size, std::string loss_func_name, std::string optimizer_func_name, std::vector<std::string> active_func_name);
